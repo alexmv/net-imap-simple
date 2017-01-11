@@ -298,11 +298,18 @@ It is not normally necessary to do this.
 
 =item put
 
-  $imap->put( $mailbox_name, $message, @flags ) or warn $imap->errstr;
+  $imap->put( $mailbox_name, $message, $date, @flags ) or warn $imap->errstr;
 
 Save a message to the server under the folder named C<$mailbox_name>.  You may
 optionally specify flags for the mail (e.g. C<\Seen>, C<\Answered>), but they
 must start with a slash.
+
+A date may be supplied optionally per RFC 3501 - 6.3.11 APPEND
+     "If a date-time is specified, the internal date SHOULD be set in
+      the resulting message; otherwise, the internal date of the
+      resulting message is set to the current date and time by default."
+Note that there is not a specific format for the date string 
+but found that "01-Jan-2016 12:59:00 -0500" works for Gmail IMAP
 
 If C<$msg> is an arrayref, the lines will be printed correctly.
 
