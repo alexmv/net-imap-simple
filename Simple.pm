@@ -510,7 +510,7 @@ sub _process_flags {
 }
 
 sub put {
-    my ( $self, $mailbox_name, $msg, @flags ) = @_;
+    my ( $self, $mailbox_name, $msg, $date, @flags ) = @_;
 
     croak "usage: \$imap->put(mailbox, message, \@flags)" unless defined $msg and defined $mailbox_name;
 
@@ -523,7 +523,10 @@ sub put {
     @flags = $self->_process_flags(@flags);
 
     return $self->_process_cmd(
-        cmd   => [ APPEND => _escape($mailbox_name) ." (@flags) {$size}" ],
+        cmd   => [ APPEND => _escape($mailbox_name) .
+                  " (@flags) " .
+                  _escape($date) .
+                  " {$size}" ],
         final => sub { $self->_clear_cache },
         process => sub {
             if ($size) {
